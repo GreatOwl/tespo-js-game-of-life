@@ -15,10 +15,10 @@ var StringUtils = {
 }
 
 class Coordinate {
-    constructor (xValue, yValue) {
-        this.x = xValue;
-        this.y = yValue;
-    }
+    constructor (
+        private x, 
+        private y
+    ) {}
 
     getX() {
         return this.x;
@@ -49,9 +49,7 @@ class BaseCoordinate extends Coordinate{
 }
 
 class NormalizedCoordinate {
-    constructor (coordinate) {
-        this.coordinate = coordinate;
-    }
+    constructor (private coordinate) {}
 
     getX() {
         return this.coordinate.getX() * gridSize;
@@ -79,7 +77,7 @@ function getGrid() {
 function drawCell(coordinate) {
     var canvas = getGrid();
     canvas.fillStyle = 'rgb(0, 0, 0)';
-    localCoordinate = new NormalizedCoordinate(coordinate);
+    var localCoordinate = new NormalizedCoordinate(coordinate);
     canvas.fillRect(
         localCoordinate.getX(),
         localCoordinate.getY(), 
