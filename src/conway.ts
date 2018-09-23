@@ -1,10 +1,17 @@
-var universe = null;
-var conwayCanvas = null;
-var gridSize = 10;
-var coordinates = {};
+type GridConfig = {
+    universe: string,
+    style: string,
+    size: number
+}
+type GridState = {
+    inputCoordinates: Map<String, CoordinateInterface>,
+    coordinates: Map<String, CoordinateInterface>,
+    universe?: HTMLCanvasElement,
+    canvas?: CanvasRenderingContext2D
+}
 
 var StringUtils = {
-    padLeft (padding, padWith, value) {
+    padLeft: function(padding, padWith, value): string {
         var length = value.length;
         var padToAdd = padding - length;
         if (padToAdd > 0) {
@@ -14,30 +21,36 @@ var StringUtils = {
     }
 }
 
-class Coordinate {
+interface CoordinateInterface {
+    getX(): number;
+    getY(): number;
+    toString(): string;
+}
+
+class Coordinate implements CoordinateInterface{
     constructor (
-        private x, 
-        private y
+        private x: number, 
+        private y: number
     ) {}
 
-    getX() {
+    getX(): number {
         return this.x;
     }
 
-    getY() {
+    getY(): number {
         return this.y;
     }
 
-    toString() {
-        return StringUtils.padLeft(5, "0", this.getX()) + StringUtils.padLeft(5, "0", this.getY())
+    toString(): string {
+        return StringUtils.padLeft(5, "0", this.getX()) + StringUtils.padLeft(5, "0", this.getY());
     }
 }
 
-class BaseCoordinate extends Coordinate{
-    constructor (xValue, yValue) {
+class UserCoordinate extends Coordinate{
+    constructor (xValue: number, yValue: number, size: number) {
         var local = {
             normalizeCoordinate(value) {
-                return Math.floor((value - 10)/gridSize);
+                return Math.floor((value - 10)/size);
             }
         }
 
@@ -48,54 +61,102 @@ class BaseCoordinate extends Coordinate{
     }
 }
 
-class NormalizedCoordinate {
-    constructor (private coordinate) {}
+class NormalizedCoordinate implements CoordinateInterface{
+    constructor (private coordinate: CoordinateInterface, private size: number) {}
 
-    getX() {
-        return this.coordinate.getX() * gridSize;
+    getX(): number {
+        return this.coordinate.getX() * this.size;
     }
 
-    getY() {
-        return this.coordinate.getY() * gridSize;
+    getY(): number {
+        return this.coordinate.getY() * this.size;
     }
 }
 
-function getUniverse() {
-    if (universe === null) {
-        universe = document.getElementById('universe');
+class Grid {
+    private state: GridState = {
+        inputCoordinates: new Map<String, CoordinateInterface>(),
+        coordinates: new Map<String, CoordinateInterface>(),
+        universe: null,
+        canvas: null,
     }
-    return universe;
-}
 
-function getGrid() {
-    if (conwayCanvas === null) {
-        conwayCanvas = getUniverse().getContext('2d');
+    constructor(private config: GridConfig){}
+
+    private getUniverse(): HTMLCanvasElement {
+        if (this.state.universe === null) {
+            var localUniverse = document.getElementById('universe');
+            if (localUniverse instanceof HTMLCanvasElement) {
+                this.state.universe = localUniverse;
+            }
+        }
+        return this.state.universe;
     }
-    return conwayCanvas;
+
+    private getGrid(): CanvasRenderingContext2D {
+        if (this.state.canvas === null) {
+            this.state.canvas = this.getUniverse().getContext('2d');
+        }
+        this.state.canvas.fillStyle = this.config.style;
+        return this.state.canvas;
+    }
+
+    private updateCanvasCell(command: string, coord: CoordinateInterface) {
+        var canvas: CanvasRenderingContext2D = this.getGrid();
+        canvas[command](coord.getX(), coord.getY(), this.config.size, this.config.size);
+    }
+
+    /**
+     * getSize
+     */
+    public getSize(): number {
+        return this.config.size;
+    }
+    /**
+     * name
+     */
+    public drawCell(coordinate: CoordinateInterface): void {
+        this.state.coordinates[coordinate.toString()] = coordinate;
+        this.updateCanvasCell("fillRect", new NormalizedCoordinate(coordinate, this.getSize()));
+    }
+
+    /**
+     * name
+     */
+    public clearCell(coordinate: CoordinateInterface) {
+        this.state.coordinates[coordinate.toString()] = null;
+        this.updateCanvasCell("clearRect", new NormalizedCoordinate(coordinate, this.getSize()));
+    }
+
+    /**
+     * isCellAllive
+     */
+    public isCellAllive(coordinate: CoordinateInterface): boolean {
+        return this.state.coordinates[coordinate.toString()];
+    }
+
+    public registerEvent(event: string, action: any) {
+        this.getUniverse().addEventListener(event, action);
+    }
 }
 
-function drawCell(coordinate) {
-    var canvas = getGrid();
-    canvas.fillStyle = 'rgb(0, 0, 0)';
-    var localCoordinate = new NormalizedCoordinate(coordinate);
-    canvas.fillRect(
-        localCoordinate.getX(),
-        localCoordinate.getY(), 
-        gridSize, 
-        gridSize
-    );
-}
-
-function activateInput() {
-    getUniverse().addEventListener('click', function(click) {
-        var coordinate = new BaseCoordinate(click.clientX, click.clientY);
-        if (!coordinates[coordinate.toString()]) {
-            coordinates[coordinate.toString()] = coordinate;
-            drawCell(coordinate);
+function activateInput(grid: Grid, config: GridConfig) {
+    grid.registerEvent('click', function(click) {
+        var coordinate = new UserCoordinate(click.clientX, click.clientY, grid.getSize());
+        if (grid.isCellAllive(coordinate)) {
+            grid.clearCell(coordinate);
+        } else {
+            grid.drawCell(coordinate);
         }
     });
 }
 
 function draw() {
-    activateInput();
+    var config: GridConfig = {
+        universe: "universe",
+        style: 'rgb(0, 0, 0)',
+        size: 10
+    };
+    var grid: Grid = new Grid(config);
+    activateInput(grid, config);
 }
