@@ -2,7 +2,7 @@
   "compileOnSave": true,
   "compilerOptions": {
     "baseUrl": "./*",
-    "outDir": "./build/",
+    "outDir": "./js/",
     "sourceMap": true,
     "declaration": false,
     "module": "es2015",
