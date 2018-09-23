@@ -1,0 +1,17 @@
+version: '3.2'
+services:
+  web:
+    image: nginx
+    volumes:
+      - type: bind
+        source: .
+        target: /data/www
+      - type: bind
+        source: ./config/conway.template
+        target: /etc/nginx/conf.d/conway.template
+    ports:
+      - "8088:80"
+    environment:
+      - NGINX_HOST=localhost
+      - NGINX_PORT=80
+    command: /bin/bash -c "envsubst < /etc/nginx/conf.d/conway.template > /etc/nginx/conf.d/default.conf && exec nginx -g 'daemon off;'"

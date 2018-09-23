@@ -3,12 +3,16 @@
   <head>
     <meta charset="utf-8"/>
     <title>Conways Game of Life</title>
-    <script src="js/conway.js"></script>
+    <!-- <script type="module">import './module.mjs';</script> -->
+    <script type="module">
+        import draw from './js/conway.js';
+        window.draw = draw;
+    </script>
     <style type="text/css">
       canvas { border: 1px solid black; }
     </style>
   </head>
-  <body onload="draw();">
-    <canvas id="universe" width="150" height="150"></canvas>
+  <body onload="window.draw();">
+    <canvas id="universe" width="500" height="300"></canvas>
   </body>
 </html>
