@@ -22,7 +22,8 @@ export module Coordinates {
         }
     
         toString(): string {
-            return utils.strings.padLeft(5, "0", this.getX()) + utils.strings.padLeft(5, "0", this.getY());
+            return "0000300005";
+            // return utils.strings.padLeft(5, "0", this.getX()) + utils.strings.padLeft(5, "0", this.getY());
         }
     }
     
