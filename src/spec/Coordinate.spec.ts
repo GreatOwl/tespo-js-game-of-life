@@ -140,4 +140,14 @@ describe("Normalized coordinate adjusts coordinates so things look good to users
         var subject = new Coordinates.NormalizedCoordinate(base, gridSize);
         expect(subject.getX()).toBe(30);
     });
+    it("expects getY to return 70", () => {
+        var base = new Coordinates.Coordinate(1,7);
+        var subject = new Coordinates.NormalizedCoordinate(base, gridSize);
+        expect(subject.getY()).toBe(70);
+    });
+    it("expects getY to return 50", () => {
+        var base = new Coordinates.Coordinate(3,5);
+        var subject = new Coordinates.NormalizedCoordinate(base, gridSize);
+        expect(subject.getY()).toBe(50);
+    });
 });
