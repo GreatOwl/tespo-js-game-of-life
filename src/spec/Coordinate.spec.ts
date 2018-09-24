@@ -118,4 +118,21 @@ describe("User Coordinate successfully converts to Base Coordinate", () => {
     it("expects toString to return truncated string '5004450037'", () => {
         testHash(550044, 550037, "5004450037");
     });
+    it("should return correct X and Y even for a smaller GridSize", () => {
+        var smallerCoordinates: number[] = [0, 1, 2, 3];
+        var testGetX = testGetXBuilder(smallerCoordinates);
+        var testGetY = testGetYBuilder(smallerCoordinates);
+        testGetX(3);
+        testGetX(432);
+        testGetY(9);
+        testGetY(983);
+    })
+});
+describe("Normalized coordinate returns the user visible coordinates so that boxes print correctly", () => {
+    var gridSize:number = 10;//means 10 pixels
+    it("expects getX to return 10", () => {
+        var base = new Coordinates.Coordinate(1,2);
+        var subject = new Coordinates.NormalizedCoordinate(base, gridSize);
+        expect(subject.getX()).toBe(10);
+    });
 });
