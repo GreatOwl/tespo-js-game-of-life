@@ -29,5 +29,10 @@ describe("Coordinates hold and operate as expected", function() {
         var coordinate = new Coordinates.Coordinate(3, 5);
         expect(coordinate.toString()).toBe(expectedString);
     });
+    it("expects toString to return '0000400007'", function() {
+        var expectedString:string = "0000400007";
+        var coordinate = new Coordinates.Coordinate(4, 7);
+        expect(coordinate.toString()).toBe(expectedString);
+    });
 
   });
