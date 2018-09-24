@@ -51,26 +51,36 @@ describe("Base Coordinate is reliable", () => {
     });
   });
 describe("User Coordinate successfully converts to Base Coordinate", () => {
+    var calculateUserCoordinateBuilder = (size, cursorFudgeSize):Function => {
+        return (expected: number):number => {
+            return expected * size + cursorFudgeSize
+        }
+    }
+
     var userCoordinateRange:number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
     var cursorFudgeSize: number = 10;
     var size: number = userCoordinateRange.length;
-    var calculateUserCoordinate = (expected: number):number => {
-        return expected * size + cursorFudgeSize
+    var calculateUserCoordinate = calculateUserCoordinateBuilder(size, cursorFudgeSize);
+    var testGetYBuilder = (userCoordinateRange:number[]):Function => {
+        return (expectedY: number) => {
+            var y:number = calculateUserCoordinate(expectedY);
+            userCoordinateRange.forEach(offset => {
+                var coordinate = new Coordinates.UserCoordinate(10, y + offset, size);
+                expect(coordinate.getY()).toBe(expectedY);
+            });
+        }
     }
-    var testGetY = (expectedY: number) => {
-        var y:number = calculateUserCoordinate(expectedY);
-        userCoordinateRange.forEach(offset => {
-            var coordinate = new Coordinates.UserCoordinate(10, y + offset, size);
-            expect(coordinate.getY()).toBe(expectedY);
-        });
+    var testGetXBuilder = (userCoordinateRange:number[]):Function => {
+        return (expectedX: number) => {
+            var x:number = calculateUserCoordinate(expectedX);
+            userCoordinateRange.forEach(offset => {
+                var coordinate = new Coordinates.UserCoordinate(x + offset, 10, size);
+                expect(coordinate.getX()).toBe(expectedX);
+            });
+        }
     }
-    var testGetX = (expectedX: number) => {
-        var x:number = calculateUserCoordinate(expectedX);
-        userCoordinateRange.forEach(offset => {
-            var coordinate = new Coordinates.UserCoordinate(x + offset, 10, size);
-            expect(coordinate.getX()).toBe(expectedX);
-        });
-    }
+    var testGetX = testGetXBuilder(userCoordinateRange);
+    var testGetY = testGetYBuilder(userCoordinateRange);
     it("expects getX to return 1", () => {
         testGetX(1);
     })
@@ -101,5 +111,11 @@ describe("User Coordinate successfully converts to Base Coordinate", () => {
     });
     it("expects toString to return '0004400037'", () => {
         testHash(44, 37, "0004400037");
+    });
+    it("expects toString to return '5004450037'", () => {
+        testHash(50044, 50037, "5004450037");
+    });
+    it("expects toString to return truncated string '5004450037'", () => {
+        testHash(550044, 550037, "5004450037");
     });
 });
