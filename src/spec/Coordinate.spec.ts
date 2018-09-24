@@ -83,21 +83,23 @@ describe("User Coordinate successfully converts to Base Coordinate", () => {
     it("expects getY to return 5", () => {
         testGetY(5);
     })
-    var testHash = (expectedX: number, expectedY: number) => {
+    var testHash = (expectedX: number, expectedY: number, expectedString:string) => {
         var x:number = calculateUserCoordinate(expectedX);
         var y:number = calculateUserCoordinate(expectedY);
         userCoordinateRange.forEach(offsetX => {
             userCoordinateRange.forEach(offsetY => {
                 var coordinate = new Coordinates.UserCoordinate(x + offsetX, y + offsetY, size);
-                expect(coordinate.getX()).toBe(expectedX);
-                expect(coordinate.getY()).toBe(expectedY);
+                expect(coordinate.toString()).toBe(expectedString);
             });
         });
     }
     it("expects toString to return '0000300005'", () => {
-        testHash(3, 5);
+        testHash(3, 5, "0000300005");
     });
     it("expects toString to return '0000400007'", () => {
-        testHash(4, 7);
+        testHash(4, 7, "0000400007");
+    });
+    it("expects toString to return '0004400037'", () => {
+        testHash(44, 37, "0004400037");
     });
 });
