@@ -45,5 +45,10 @@ describe("Coordinates hold and operate as expected", function() {
         var coordinate = new Coordinates.Coordinate(50044, 50037);
         expect(coordinate.toString()).toBe(expectedString);
     });
+    it("expects toString to return truncated string '5004450037'", function() {
+        var expectedString:string = "5004450037";
+        var coordinate = new Coordinates.Coordinate(550044, 550037);
+        expect(coordinate.toString()).toBe(expectedString);//.not(expectedString);
+    });
 
   });

@@ -3,7 +3,8 @@ export module Utils{
         padLeft: function(padding:number , inPadWith:any, inValue:any): string {
             var value:String = strings.ensureString(inValue);
             var padWith:String = strings.ensureString(inPadWith);
-            return value.padStart(padding, padWith.toString());
+            var rawValue:string = value.padStart(padding, padWith.toString());
+            return rawValue.substr(rawValue.length - padding, rawValue.length);
         },
         ensureString: function(value:any): String {
             if (value instanceof Number) {
