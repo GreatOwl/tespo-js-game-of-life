@@ -150,4 +150,34 @@ describe("Normalized coordinate adjusts coordinates so things look good to users
         var subject = new Coordinates.NormalizedCoordinate(base, gridSize);
         expect(subject.getY()).toBe(50);
     });
+    it("expects toString to return '0000300005'", () => {
+        var expectedString:string = "0000300005";
+        var coordinate = new Coordinates.Coordinate(3, 5);
+        var subject = new Coordinates.NormalizedCoordinate(coordinate, gridSize);
+        expect(subject.toString()).toBe(expectedString);
+    });
+    it("expects toString to return '0000400007'", () => {
+        var expectedString:string = "0000400007";
+        var coordinate = new Coordinates.Coordinate(4, 7);
+        var subject = new Coordinates.NormalizedCoordinate(coordinate, gridSize);
+        expect(subject.toString()).toBe(expectedString);
+    });
+    it("expects toString to return '0004400037'", () => {
+        var expectedString:string = "0004400037";
+        var coordinate = new Coordinates.Coordinate(44, 37);
+        var subject = new Coordinates.NormalizedCoordinate(coordinate, gridSize);
+        expect(subject.toString()).toBe(expectedString);
+    });
+    it("expects toString to return '5004450037'", () => {
+        var expectedString:string = "5004450037";
+        var coordinate = new Coordinates.Coordinate(50044, 50037);
+        var subject = new Coordinates.NormalizedCoordinate(coordinate, gridSize);
+        expect(subject.toString()).toBe(expectedString);
+    });
+    it("expects toString to return truncated string '5004450037'", () => {
+        var expectedString:string = "5004450037";
+        var coordinate = new Coordinates.Coordinate(550044, 550037);
+        var subject = new Coordinates.NormalizedCoordinate(coordinate, gridSize);
+        expect(subject.toString()).toBe(expectedString);
+    });
 });

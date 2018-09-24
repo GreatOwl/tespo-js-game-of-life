@@ -51,6 +51,9 @@ export module Coordinates {
         getY(): number {
             return this.coordinate.getY() * this.size;
         }
+        toString(): string {
+            return this.coordinate.toString();
+        }
     }
 }
 export default Coordinates;
