@@ -128,11 +128,16 @@ describe("User Coordinate successfully converts to Base Coordinate", () => {
         testGetY(983);
     })
 });
-describe("Normalized coordinate returns the user visible coordinates so that boxes print correctly", () => {
+describe("Normalized coordinate adjusts coordinates so things look good to users", () => {
     var gridSize:number = 10;//means 10 pixels
     it("expects getX to return 10", () => {
         var base = new Coordinates.Coordinate(1,2);
         var subject = new Coordinates.NormalizedCoordinate(base, gridSize);
         expect(subject.getX()).toBe(10);
+    });
+    it("expects getX to return 30", () => {
+        var base = new Coordinates.Coordinate(3,2);
+        var subject = new Coordinates.NormalizedCoordinate(base, gridSize);
+        expect(subject.getX()).toBe(30);
     });
 });
