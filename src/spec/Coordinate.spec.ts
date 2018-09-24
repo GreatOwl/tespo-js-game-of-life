@@ -35,4 +35,15 @@ describe("Coordinates hold and operate as expected", function() {
         expect(coordinate.toString()).toBe(expectedString);
     });
 
+    it("expects toString to return '0004400037'", function() {
+        var expectedString:string = "0004400037";
+        var coordinate = new Coordinates.Coordinate(44, 37);
+        expect(coordinate.toString()).toBe(expectedString);
+    });
+    it("expects toString to return '5004450037'", function() {
+        var expectedString:string = "5004450037";
+        var coordinate = new Coordinates.Coordinate(50044, 50037);
+        expect(coordinate.toString()).toBe(expectedString);
+    });
+
   });
