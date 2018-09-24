@@ -1,6 +1,6 @@
-import { Conway as coords} from "./Coordinate.js";
+import { Coordinates as coords} from "./Coordinate.js";
 
-export namespace Conway {
+export module CanvasGrid {
     export type GridConfig = {
         universe: string,
         style: string,
@@ -46,6 +46,13 @@ export namespace Conway {
             var canvas: CanvasRenderingContext2D = this.getGrid();
             canvas[command](coord.getX(), coord.getY(), this.config.size, this.config.size);
         }
+
+        private loadCoordinateType(coordinate: coords.CoordinateInterface): coords.CoordinateInterface {
+            if (coordinate instanceof coords.UserCoordinate) {
+                return new coords.NormalizedCoordinate(coordinate, this.getSize());
+            }
+            return coordinate;
+        }
     
         /**
          * getSize
@@ -58,7 +65,7 @@ export namespace Conway {
          */
         public drawCell(coordinate: coords.CoordinateInterface): void {
             this.state.coordinates[coordinate.toString()] = coordinate;
-            this.updateCanvasCell("fillRect", new coords.NormalizedCoordinate(coordinate, this.getSize()));
+            this.updateCanvasCell("fillRect", this.loadCoordinateType(coordinate));
         }
     
         /**
@@ -66,7 +73,7 @@ export namespace Conway {
          */
         public clearCell(coordinate: coords.CoordinateInterface) {
             this.state.coordinates[coordinate.toString()] = null;
-            this.updateCanvasCell("clearRect", new coords.NormalizedCoordinate(coordinate, this.getSize()));
+            this.updateCanvasCell("clearRect", this.loadCoordinateType(coordinate));
         }
     
         /**
@@ -81,3 +88,5 @@ export namespace Conway {
         }
     }
 }
+
+export default CanvasGrid;

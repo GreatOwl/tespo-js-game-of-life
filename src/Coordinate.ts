@@ -1,6 +1,6 @@
-import {Conway as utils} from "./Utils.js";
+import {Utils as utils} from "./Utils.js";
 
-export namespace Conway {
+export module Coordinates {
     export interface CoordinateInterface {
         getX(): number;
         getY(): number;
@@ -53,3 +53,4 @@ export namespace Conway {
         }
     }
 }
+export default Coordinates;

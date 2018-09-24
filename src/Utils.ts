@@ -1,6 +1,4 @@
-// import { Conway } from "./Coordinate";
-
-export namespace Conway{
+export module Utils{
     export var strings = {
         padLeft: function(padding, padWith, value): string {
             var length = value.length;
@@ -12,3 +10,4 @@ export namespace Conway{
         }
     }
 }
+export default Utils;

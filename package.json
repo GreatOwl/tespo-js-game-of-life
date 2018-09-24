@@ -3,19 +3,17 @@
   "version": "0.0.0",
   "scripts": {
     "build": "tsc",
-    "test": "./node_modules/karma/bin/karma start"
+    "test": "bin/test.sh"
   },
   "private": true,
   "devDependencies": {
-    "@types/jasmine": "~2.8.6",
+    "@types/jasmine": "^2.8.8",
     "@types/jasminewd2": "~2.0.3",
+    "jasmine": "^3.2.0",
     "jasmine-core": "~2.99.1",
+    "jasmine-node": "^1.16.2",
     "jasmine-spec-reporter": "~4.2.1",
-    "karma": "^3.0.0",
-    "karma-chrome-launcher": "~2.2.0",
-    "karma-coverage-istanbul-reporter": "~2.0.0",
-    "karma-jasmine": "~1.1.1",
-    "karma-jasmine-html-reporter": "^0.2.2",
+    "ts-node": "^7.0.1",
     "tslint": "~5.9.1",
     "typescript": "~3"
   }
