@@ -29,4 +29,17 @@ describe("Neighborhood.Neighbor", () => {
         neighbor.addNeighbor();
         expect(neighbor.count()).toBe(1);
     });
+    it("can't have more than 8 neighbors", () => {
+        var neighbor:Neighborhood.Neighbor = new Neighborhood.Neighbor(expected, true);
+        neighbor.addNeighbor();
+        neighbor.addNeighbor();
+        neighbor.addNeighbor();
+        neighbor.addNeighbor();
+        neighbor.addNeighbor();
+        neighbor.addNeighbor();
+        neighbor.addNeighbor();
+        neighbor.addNeighbor();
+        neighbor.addNeighbor();//9th suggested neighbor
+        expect(neighbor.count()).toBe(8);
+    });
 });
