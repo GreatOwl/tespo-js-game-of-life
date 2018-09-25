@@ -36,11 +36,13 @@ export module Neighborhood{
         }
     }
     export class Neighborhood {
+        constructor(private neighbor:Neighbor){}
+
         /**
          * getCenter
          */
         public getCenter() {
-            return new Neighbor(new Coordinates.Coordinate(8,7), true);
+            return this.neighbor;
         }
     }
 }

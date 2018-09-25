@@ -44,9 +44,15 @@ describe("N.Neighbor", () => {
     });
 });
 describe("N.Neighborhood", () =>{
-    it("has a central neighbor", () => {
+    it("has a central neighbor at (8,7)", () => {
         var neighbor: N.Neighbor = new N.Neighbor(new C.Coordinate(8,7), true);
-        var neighborhood: N.Neighborhood = new N.Neighborhood();
+        var neighborhood: N.Neighborhood = new N.Neighborhood(neighbor);
+        expect(neighborhood.getCenter().getLocation().toString())
+            .toBe(neighbor.getLocation().toString())
+    });
+    it("has a central neighbor at (10,17)", () => {
+        var neighbor: N.Neighbor = new N.Neighbor(new C.Coordinate(10,17), true);
+        var neighborhood: N.Neighborhood = new N.Neighborhood(neighbor);
         expect(neighborhood.getCenter().getLocation().toString())
             .toBe(neighbor.getLocation().toString())
     });
