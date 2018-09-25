@@ -1,4 +1,5 @@
 import { Coordinates as coords, Coordinates} from "./Coordinate.js";
+import { Utils } from "./Utils.js";
 
 export module CanvasGrid {
     export type GridConfig = {
@@ -11,7 +12,8 @@ export module CanvasGrid {
         inputCoordinates: Map<String, coords.CoordinateInterface>,
         coordinates: Map<String, coords.CoordinateInterface>,
         universe?: any,//Can't assert in tests basic DOM/document types #internalRage
-        canvas?: any
+        canvas?: any,
+        document?: Utils.Doc
     }
     
     export class Grid {
@@ -20,22 +22,20 @@ export module CanvasGrid {
             coordinates: new Map<String, coords.CoordinateInterface>(),
             universe: null,
             canvas: null,
+            document: null,
         }
-        private document: Document;
     
         constructor(private config: GridConfig){
-            if (typeof document !== 'undefined') {
-                this.document = document;
-            }
+            this.state.document = new Utils.Doc()
         }
     
         public setDocument(document:Document): void {
-            this.document = document;
+            this.state.document = new Utils.Doc(document);
         }
 
         private getUniverse(): any {
             if (this.state.universe === null) {
-                var localUniverse = this.document.getElementById('universe');
+                var localUniverse = this.state.document.id('universe');
                 
                 if (typeof localUniverse["getContext"] === "function") {
                     this.state.universe = localUniverse;

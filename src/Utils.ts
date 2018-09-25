@@ -13,5 +13,24 @@ export module Utils{
             return new String(value);
         }
     }
+    //decorator for document abstraction
+    export class Doc {
+        private document:Document
+        constructor(inDocument?: Document) {
+            if (typeof document !== "undefined") {
+                this.document = document;
+            } else {
+                this.document = inDocument;
+            }
+        }
+
+        public getElementById(id:string): HTMLElement {
+            return this.document.getElementById(id);
+        }
+
+        public id(id:string): HTMLElement {
+            return this.getElementById(id);
+        }
+    }
 }
 export default Utils;
