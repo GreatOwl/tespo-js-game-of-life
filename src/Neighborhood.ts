@@ -20,6 +20,10 @@ export module Neighborhood{
         public isAlive() {
            return this.alive; 
         }
+
+        public count() {
+            return 0;
+        }
     }
 }
 
