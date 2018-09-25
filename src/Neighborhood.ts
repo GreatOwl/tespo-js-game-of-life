@@ -35,6 +35,14 @@ export module Neighborhood{
             }
         }
     }
+    export class Neighborhood {
+        /**
+         * getCenter
+         */
+        public getCenter() {
+            return new Neighbor(new Coordinates.Coordinate(8,7), true);
+        }
+    }
 }
 
 export default Neighborhood;
