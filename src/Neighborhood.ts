@@ -3,11 +3,12 @@ import { Coordinates } from "./Coordinate";
 export module Neighborhood{
     export class Neighbor {
 
+        constructor(private location:Coordinates.CoordinateInterface){}
         /*
-         * Coordinates.Coordate getLocation
+         * Coordinates.CoordateInterface getLocation
          */;
-        public getLocation():Coordinates.Coordinate {
-            return new Coordinates.Coordinate(3,3);
+        public getLocation():Coordinates.CoordinateInterface {
+            return this.location;
         }
     }
 }
