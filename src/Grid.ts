@@ -9,8 +9,8 @@ export module CanvasGrid {
     }
     
     type GridState = {
-        inputCoordinates: Map<String, coords.CoordinateInterface>,
-        coordinates: Map<String, coords.CoordinateInterface>,
+        inputCoordinates: Map<string, coords.CoordinateInterface>,
+        coordinates: Map<string, coords.CoordinateInterface>,
         universe?: any,//Can't assert in tests basic DOM/document types #internalRage
         canvas?: any,
         document?: Utils.Doc
@@ -18,8 +18,8 @@ export module CanvasGrid {
     
     export class Grid {
         private state: GridState = {
-            inputCoordinates: new Map<String, coords.CoordinateInterface>(),
-            coordinates: new Map<String, coords.CoordinateInterface>(),
+            inputCoordinates: new Map<string, coords.CoordinateInterface>(),
+            coordinates: new Map<string, coords.CoordinateInterface>(),
             universe: null,
             canvas: null,
             document: null,
@@ -74,7 +74,7 @@ export module CanvasGrid {
          * name
          */
         public drawCell(coordinate: coords.CoordinateInterface): void {
-            this.state.coordinates[coordinate.toString()] = coordinate;
+            this.state.coordinates.set(coordinate.toString(), coordinate);
             this.updateCanvasCell("fillRect", this.loadCoordinateType(coordinate));
         }
     
@@ -82,7 +82,7 @@ export module CanvasGrid {
          * name
          */
         public clearCell(coordinate: coords.CoordinateInterface) {
-            this.state.coordinates[coordinate.toString()] = null;
+            this.state.coordinates.delete(coordinate.toString());
             this.updateCanvasCell("clearRect", this.loadCoordinateType(coordinate));
         }
     
@@ -90,11 +90,18 @@ export module CanvasGrid {
          * isCellAllive
          */
         public isCellAllive(coordinate: coords.CoordinateInterface): boolean {
-            return this.state.coordinates[coordinate.toString()] instanceof Coordinates.Coordinate;
+            return this.state.coordinates.has(coordinate.toString());
         }
     
         public registerEvent(event: string, action: any) {
             this.getUniverse().addEventListener(event, action);
+        }
+
+        /**
+         * getLiveCells
+         */
+        public getLiveCells(): Map<string, Coordinates.CoordinateInterface> {
+            return this.state.coordinates;
         }
     }
 }

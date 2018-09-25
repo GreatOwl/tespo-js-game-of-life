@@ -66,5 +66,32 @@ describe("Grid.Grid", () => {
         var grid:Grid.Grid = getGrid(canvasContext);
         grid.clearCell(coordinate)
     });
+    it("returns map of live cells", () => {
+        canvasContext["fillRect"] = () => {};
+
+        var coords: Coordinates.CoordinateInterface[] = [
+            new Coordinates.Coordinate(3,5),
+            new Coordinates.Coordinate(4,5),
+            new Coordinates.Coordinate(3,6),
+            new Coordinates.Coordinate(4,6)
+        ];
+        var grid:Grid.Grid = getGrid(canvasContext);
+        coords.forEach((coord: Coordinates.CoordinateInterface) => {
+            grid.drawCell(coord);
+        })
+
+        var internal:string = "notRun";
+        grid.getLiveCells().forEach((coordinate: Coordinates.CoordinateInterface) => {
+            var found: Coordinates.CoordinateInterface = coords.find(
+                (subject: Coordinates.CoordinateInterface):boolean => {
+                    return subject.toString() == coordinate.toString();
+                }
+            )
+            expect(coordinate).toBe(found);
+            internal = "run";
+        });
+        expect(internal).toBe("run");
+        
+    })
 
 });
