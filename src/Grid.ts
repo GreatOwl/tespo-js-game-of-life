@@ -1,4 +1,4 @@
-import { Coordinates as coords} from "./Coordinate.js";
+import { Coordinates as coords, Coordinates} from "./Coordinate.js";
 
 export module CanvasGrid {
     export type GridConfig = {
@@ -10,8 +10,8 @@ export module CanvasGrid {
     type GridState = {
         inputCoordinates: Map<String, coords.CoordinateInterface>,
         coordinates: Map<String, coords.CoordinateInterface>,
-        universe?: HTMLCanvasElement,
-        canvas?: CanvasRenderingContext2D
+        universe?: any,//Can't assert in tests basic DOM/document types #internalRage
+        canvas?: any
     }
     
     export class Grid {
@@ -21,13 +21,23 @@ export module CanvasGrid {
             universe: null,
             canvas: null,
         }
+        private document: Document;
     
-        constructor(private config: GridConfig){}
+        constructor(private config: GridConfig){
+            if (typeof document !== 'undefined') {
+                this.document = document;
+            }
+        }
     
-        private getUniverse(): HTMLCanvasElement {
+        public setDocument(document:Document): void {
+            this.document = document;
+        }
+
+        private getUniverse(): any {
             if (this.state.universe === null) {
-                var localUniverse = document.getElementById('universe');
-                if (localUniverse instanceof HTMLCanvasElement) {
+                var localUniverse = this.document.getElementById('universe');
+                
+                if (typeof localUniverse["getContext"] === "function") {
                     this.state.universe = localUniverse;
                 }
             }
@@ -80,7 +90,7 @@ export module CanvasGrid {
          * isCellAllive
          */
         public isCellAllive(coordinate: coords.CoordinateInterface): boolean {
-            return this.state.coordinates[coordinate.toString()];
+            return this.state.coordinates[coordinate.toString()] instanceof Coordinates.Coordinate;
         }
     
         public registerEvent(event: string, action: any) {
