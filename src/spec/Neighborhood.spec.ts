@@ -24,4 +24,9 @@ describe("Neighborhood.Neighbor", () => {
         var neighbor:Neighborhood.Neighbor = new Neighborhood.Neighbor(expected, true);
         expect(neighbor.count()).toBe(0);
     });
+    it("knows it has a known living neighbors", () => {
+        var neighbor:Neighborhood.Neighbor = new Neighborhood.Neighbor(expected, true);
+        neighbor.addNeighbor();
+        expect(neighbor.count()).toBe(1);
+    });
 });
