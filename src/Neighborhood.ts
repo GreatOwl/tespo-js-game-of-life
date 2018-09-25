@@ -42,7 +42,19 @@ export module Neighborhood{
             }
         }
     }
+    type offset = {x:number, y:number};
     export class Neighborhood {
+        private offsets:offset[] = [
+            {x:1, y:0},
+            {x:1, y:-1},
+            {x:0, y:-1},
+            {x:-1, y:-1},
+            {x:-1, y:0},
+            {x:-1, y:1},
+            {x:0, y:1},
+            {x:1, y:1},
+        ]
+
         constructor(private neighbor:Neighbor){}
 
         /**
@@ -56,16 +68,17 @@ export module Neighborhood{
          * getAllNeighbors
          */
         public getAllNeighbors() {
-            return [
-                new Neighbor(new Coordinates.Coordinate(11,17)),
-                new Neighbor(new Coordinates.Coordinate(11,16)),
-                new Neighbor(new Coordinates.Coordinate(10,16)),
-                new Neighbor(new Coordinates.Coordinate(9,16)),
-                new Neighbor(new Coordinates.Coordinate(9,17)),
-                new Neighbor(new Coordinates.Coordinate(9,18)),
-                new Neighbor(new Coordinates.Coordinate(10,18)),
-                new Neighbor(new Coordinates.Coordinate(11,18)),
-            ];
+            var neighbors:Neighbor[] = [];
+            var index = 0;
+            this.offsets.forEach((offset:offset) => {
+                var nextCoord = new Coordinates.Coordinate(
+                    this.neighbor.getLocation().getX() + offset.x,
+                    this.neighbor.getLocation().getY() + offset.y
+                )
+                var nextNeighbor = new Neighbor(nextCoord);
+                neighbors[index] = nextNeighbor;
+            })
+            return neighbors;
         }
     }
 }

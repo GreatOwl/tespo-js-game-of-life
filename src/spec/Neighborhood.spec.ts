@@ -82,4 +82,30 @@ describe("N.Neighborhood", () =>{
         });
         expect(internal).toBe("run");
     });
+    it("knows all neighbors in another neigborhood", () => {
+        var neighbor: N.Neighbor = new N.Neighbor(new C.Coordinate(8,7), true);
+        var neighborhood: N.Neighborhood = new N.Neighborhood(neighbor);
+        var expected:N.Neighbor[] = [
+            new N.Neighbor(new C.Coordinate(9,7)),
+            new N.Neighbor(new C.Coordinate(9,6)),
+            new N.Neighbor(new C.Coordinate(8,6)),
+            new N.Neighbor(new C.Coordinate(7,6)),
+            new N.Neighbor(new C.Coordinate(7,7)),
+            new N.Neighbor(new C.Coordinate(7,8)),
+            new N.Neighbor(new C.Coordinate(8,8)),
+            new N.Neighbor(new C.Coordinate(9,8)),
+        ]
+        var internal = "notRun";
+        neighborhood.getAllNeighbors().forEach((element:N.Neighbor) => {
+            var found = expected.find((expectedNeighbor:N.Neighbor) => {
+                if (expectedNeighbor.getLocation().toString() == element.getLocation().toString()) {
+                    return true;
+                }
+                return false;
+            })
+            expect(found.getLocation().toString()).toBe(element.getLocation().toString());
+            internal = "run";
+        });
+        expect(internal).toBe("run");
+    });
 });
