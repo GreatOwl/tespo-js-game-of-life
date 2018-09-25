@@ -91,7 +91,6 @@ describe("Grid.Grid", () => {
             internal = "run";
         });
         expect(internal).toBe("run");
-        
     })
 
 });
