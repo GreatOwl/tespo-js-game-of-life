@@ -58,7 +58,7 @@ export module CanvasGrid {
         }
 
         private loadCoordinateType(coordinate: coords.CoordinateInterface): coords.CoordinateInterface {
-            if (coordinate instanceof coords.UserCoordinate) {
+            if (coordinate instanceof coords.Coordinate) {
                 return new coords.NormalizedCoordinate(coordinate, this.getSize());
             }
             return coordinate;
