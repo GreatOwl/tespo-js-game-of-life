@@ -56,4 +56,30 @@ describe("N.Neighborhood", () =>{
         expect(neighborhood.getCenter().getLocation().toString())
             .toBe(neighbor.getLocation().toString())
     });
+    it("knows all neighbors in the neigborhood", () => {
+        var neighbor: N.Neighbor = new N.Neighbor(new C.Coordinate(10,17), true);
+        var neighborhood: N.Neighborhood = new N.Neighborhood(neighbor);
+        var expected:N.Neighbor[] = [
+            new N.Neighbor(new C.Coordinate(11,17)),
+            new N.Neighbor(new C.Coordinate(11,16)),
+            new N.Neighbor(new C.Coordinate(10,16)),
+            new N.Neighbor(new C.Coordinate(9,16)),
+            new N.Neighbor(new C.Coordinate(9,17)),
+            new N.Neighbor(new C.Coordinate(9,18)),
+            new N.Neighbor(new C.Coordinate(10,18)),
+            new N.Neighbor(new C.Coordinate(11,18)),
+        ]
+        var internal = "notRun";
+        neighborhood.getAllNeighbors().forEach((element:N.Neighbor) => {
+            var found = expected.find((expectedNeighbor:N.Neighbor) => {
+                if (expectedNeighbor.getLocation().toString() == element.getLocation().toString()) {
+                    return true;
+                }
+                return false;
+            })
+            expect(found.getLocation().toString()).toBe(element.getLocation().toString());
+            internal = "run";
+        });
+        expect(internal).toBe("run");
+    });
 });
