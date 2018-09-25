@@ -17,4 +17,9 @@ describe("Neighborhood.Neighbor", () => {
         var neighbor:Neighborhood.Neighbor = new Neighborhood.Neighbor(expected);
         expect(neighbor.isAlive()).toBe(false);
     });
+    it("is alive",() => {
+        var expected = new Coordinates.Coordinate(4,9);
+        var neighbor:Neighborhood.Neighbor = new Neighborhood.Neighbor(expected, true);
+        expect(neighbor.isAlive()).toBe(true);
+    });
 });

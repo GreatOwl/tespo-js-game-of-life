@@ -3,7 +3,10 @@ import { Coordinates } from "./Coordinate";
 export module Neighborhood{
     export class Neighbor {
 
-        constructor(private location:Coordinates.CoordinateInterface){}
+        constructor(
+            private location:Coordinates.CoordinateInterface,
+            private alive:boolean = false
+        ){}
         /*
          * Coordinates.CoordateInterface getLocation
          */;
@@ -15,7 +18,7 @@ export module Neighborhood{
          * isAlive
          */
         public isAlive() {
-           return false; 
+           return this.alive; 
         }
     }
 }
