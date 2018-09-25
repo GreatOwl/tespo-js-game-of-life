@@ -12,4 +12,9 @@ describe("Neighborhood.Neighbor", () => {
         var neighbor:Neighborhood.Neighbor = new Neighborhood.Neighbor(expected);
         expect(neighbor.getLocation().toString()).toBe(expected.toString());
     });
+    it("is dead",() => {
+        var expected = new Coordinates.Coordinate(4,9);
+        var neighbor:Neighborhood.Neighbor = new Neighborhood.Neighbor(expected);
+        expect(neighbor.isAlive()).toBe(false);
+    });
 });

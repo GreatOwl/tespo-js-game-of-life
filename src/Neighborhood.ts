@@ -10,6 +10,13 @@ export module Neighborhood{
         public getLocation():Coordinates.CoordinateInterface {
             return this.location;
         }
+
+        /**
+         * isAlive
+         */
+        public isAlive() {
+           return false; 
+        }
     }
 }
 
