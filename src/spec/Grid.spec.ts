@@ -33,6 +33,13 @@ describe("The grid object can manipulate the canvas", () => {
         var grid:Grid.Grid = getGrid();
         expect(grid.isCellAllive(new Coordinates.Coordinate(3,5)))
             .toBe(false);
+    });
+    it("returns true when its asked if a cell is allive", () => {
+        var grid:Grid.Grid = getGrid();
+        var coordinate:Coordinates.CoordinateInterface = new Coordinates.Coordinate(3,5)
+        grid.drawCell(coordinate)
+        expect(grid.isCellAllive(coordinate))
+            .toBe(true);
     })
 
 });
