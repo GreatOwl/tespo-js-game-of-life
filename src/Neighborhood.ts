@@ -55,13 +55,40 @@ export module Neighborhood{
             {x:1, y:1},
         ]
 
-        constructor(private neighbor:Neighbor){}
+        constructor(private neighbor:Neighbor, private universe:universe){}
 
         /**
          * getCenter
          */
         public getCenter() {
             return this.neighbor;
+        }
+
+        private wrap(n:number, max:number, min:number): number|null {
+            if (n > max) {
+                if (this.universe.wrap) {
+                    return min;
+                }
+                return null;
+            }
+            if (n < min) {
+                if (this.universe.wrap) {
+                    return max;
+                }
+                return null;
+            }
+            return n;
+        }
+
+        private getOffsetCoordinate(offset:offset): Coordinates.CoordinateInterface | null {
+            var x: number = this.neighbor.getLocation().getX();
+            var y: number = this.neighbor.getLocation().getY();
+            var nextX: number|null = this.wrap(x + offset.x, this.universe.xMax, this.universe.xMin);
+            var nextY: number|null = this.wrap(y + offset.y, this.universe.yMax, this.universe.yMin);
+            if (nextX == null || nextY == null) {
+                return null;
+            }
+            return new Coordinates.Coordinate(nextX, nextY);
         }
 
         /**
@@ -71,12 +98,11 @@ export module Neighborhood{
             var neighbors:Neighbor[] = [];
             var index = 0;
             this.offsets.forEach((offset:offset) => {
-                var nextCoord = new Coordinates.Coordinate(
-                    this.neighbor.getLocation().getX() + offset.x,
-                    this.neighbor.getLocation().getY() + offset.y
-                )
-                var nextNeighbor = new Neighbor(nextCoord);
-                neighbors[index] = nextNeighbor;
+                var nextCoord:Coordinates.CoordinateInterface|null = this.getOffsetCoordinate(offset);
+                if (nextCoord != null) {
+                    var nextNeighbor = new Neighbor(nextCoord);
+                    neighbors[index] = nextNeighbor;
+                }
             })
             return neighbors;
         }
