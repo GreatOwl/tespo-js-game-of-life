@@ -2,8 +2,11 @@
   "name": "conwaygol",
   "version": "0.0.0",
   "scripts": {
-    "build": "tsc",
+    "build": "bin/build.sh",
     "test": "bin/test.sh"
+  },
+  "dependencies": {
+    "typescript": "~3"
   },
   "private": true,
   "devDependencies": {
