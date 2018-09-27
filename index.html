@@ -5,14 +5,18 @@
     <title>Conways Game of Life</title>
     <!-- <script type="module">import './module.mjs';</script> -->
     <script type="module">
-        import draw from './js/conway.js';
+        import { draw, runToggle } from './js/conway.js';
         window.draw = draw;
+        window.runToggle = runToggle;
     </script>
     <style type="text/css">
       canvas { border: 1px solid black; }
     </style>
   </head>
   <body onload="window.draw();">
-    <canvas id="universe" width="500" height="300"></canvas>
+    <div id="container">
+        <div id="canvas"><canvas id="universe" width="500" height="300"></canvas></div>
+        <div id="input"><button id="run" onclick="window.runToggle()">run</button></div>
+    </div>
   </body>
 </html>

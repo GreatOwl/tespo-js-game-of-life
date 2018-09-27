@@ -1,4 +1,4 @@
-import { Coordinates } from "./Coordinate";
+import { Coordinates } from "./Coordinate.js";
 
 export module Neighborhood{
     export type universe = {
@@ -29,8 +29,16 @@ export module Neighborhood{
            return this.alive; 
         }
 
+        public zombify() {
+            this.alive = true;
+        }
+
         public count() {
             return this.neighborCount;
+        }
+
+        public toString() {
+            return this.getLocation().toString();
         }
 
         /**
@@ -102,6 +110,7 @@ export module Neighborhood{
                 if (nextCoord != null) {
                     var nextNeighbor = new Neighbor(nextCoord);
                     neighbors[index] = nextNeighbor;
+                    index = index + 1;
                 }
             })
             return neighbors;

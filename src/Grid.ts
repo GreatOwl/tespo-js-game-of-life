@@ -1,5 +1,6 @@
 import { Coordinates as coords, Coordinates} from "./Coordinate.js";
 import { Utils } from "./Utils.js";
+import { Neighborhood } from "./Neighborhood.js";
 
 export module CanvasGrid {
     export type GridConfig = {
@@ -24,6 +25,8 @@ export module CanvasGrid {
             canvas: null,
             document: null,
         }
+
+        private events: Map<string, Function> = new Map<string, Function>();
     
         constructor(private config: GridConfig){
             this.state.document = new Utils.Doc()
@@ -44,7 +47,7 @@ export module CanvasGrid {
             return this.state.universe;
         }
     
-        private getGrid(): CanvasRenderingContext2D {
+        public getGrid(): CanvasRenderingContext2D {
             if (this.state.canvas === null) {
                 this.state.canvas = this.getUniverse().getContext('2d');
             }
@@ -75,6 +78,7 @@ export module CanvasGrid {
          */
         public drawCell(coordinate: coords.CoordinateInterface): void {
             this.state.coordinates.set(coordinate.toString(), coordinate);
+            console.log("add(" + coordinate.toString() + ")")
             this.updateCanvasCell("fillRect", this.loadCoordinateType(coordinate));
         }
     
@@ -83,24 +87,52 @@ export module CanvasGrid {
          */
         public clearCell(coordinate: coords.CoordinateInterface) {
             this.state.coordinates.delete(coordinate.toString());
+            console.log("del(" + coordinate.toString() + ")")
             this.updateCanvasCell("clearRect", this.loadCoordinateType(coordinate));
+        }
+
+        /**
+         * clearGrid
+         */
+        public clearGrid(universe:Neighborhood.universe) {
+            this.getGrid().clearRect(
+                universe.xMin,
+                universe.yMin,
+                universe.xMax * this.config.size,
+                universe.yMax * this.config.size
+                );
+            this.state.coordinates = new Map<string, coords.CoordinateInterface>();
         }
     
         /**
          * isCellAllive
          */
         public isCellAllive(coordinate: coords.CoordinateInterface): boolean {
-            return this.state.coordinates.has(coordinate.toString());
+            if (this.state.coordinates.has(coordinate.toString())) {
+                return true;
+            }
+            return false;
         }
     
         public registerEvent(event: string, action: any) {
+            this.events.set(event, action);
             this.getUniverse().addEventListener(event, action);
+        }
+
+        public removeEvent(event: string) {
+            var action:Function = this.events.get(event);
+            this.getUniverse().removeEventListener(event, action);
         }
 
         /**
          * getLiveCells
          */
         public getLiveCells(): Map<string, Coordinates.CoordinateInterface> {
+            // console.log(this.state.coordinates);
+            // this.state.coordinates.forEach((coord) => {
+            //     console.log(coord);
+            // })
+
             return this.state.coordinates;
         }
     }
