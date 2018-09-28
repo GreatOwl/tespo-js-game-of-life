@@ -46,9 +46,9 @@ function runRun(nextRun:Function) {
     var op = () => {
         if (getText("run") === "pause"
             && grid.getLiveCells().size > 0
-            && count < 100000
         ) {
                 count = count + 1;
+                updateText("ticks", count.toString());
                 nextRun = nextRun();
                 setTimeout(op, 100);
         }
